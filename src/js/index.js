@@ -1,4 +1,6 @@
-import '../css/index.scss'
+
+require('../css/index.scss')
+require('../css/aaa.scss')
 let a = ['111', '23', 'asf']
 a.map(val => {
   val += 'aaaaa'
