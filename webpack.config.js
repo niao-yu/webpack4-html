@@ -2,18 +2,18 @@ const webpack = require('webpack')
 const path = require('path')
 const glob = require('glob')
 const HtmlWebpackPlugin = require('html-webpack-plugin') // 解析html插件
-const ExtractTextPlugin = require('extract-text-webpack-plugin') // css文件拆分插件 注:下载时候为extract-text-webpack-plugin@next
-const CleanWebpackPlugin = require('clean-webpack-plugin') // 用于在构建前清除dist目录中的内容
+// const ExtractTextPlugin = require('extract-text-webpack-plugin') // css文件拆分插件 注:下载时候为extract-text-webpack-plugin@next
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')  //处理css工具
 const optimizeCss = require('optimize-css-assets-webpack-plugin') // css 压缩插件
 let js_arr = glob.sync('./src/js/**/*.js')
-let html_arr = glob.sync('./src/pages/**/*.html')
+let html_arr = glob.sync('./src/pages/**/*.ejs')
 let entry = {}
 let HtmlWebpackPluginArr = []
-// console.log(process.env.ABC)
-html_arr.forEach(v => {
-  let name = v.replace('./src/pages/', '').replace('.html', '')
+html_arr.forEach(value => {
+  let name = value.slice(value.lastIndexOf('/') + 1, value.lastIndexOf('.'))
+  console.log(value.slice(0, value.lastIndexOf('.')) + '.ejs')
   let temp = new HtmlWebpackPlugin({ // 解析html插件
-    template: path.resolve(__dirname, v), // 路径
+    template: path.resolve(__dirname, value.slice(0, value.lastIndexOf('.')) + '.ejs'), // 路径
     filename: `${name}.html`, // 文件名:默认为index.html
     minify: { // 使用的功能
       removeAttributeQuotes: true,//去除引号
@@ -25,8 +25,8 @@ html_arr.forEach(v => {
   })
   HtmlWebpackPluginArr.push(temp)
 })
-js_arr.forEach(v => {
-  entry[v.replace('./src/js/', '').replace('.js', '')] = v
+js_arr.forEach(value => {
+  entry[value.slice(value.lastIndexOf('/') + 1, value.lastIndexOf('.'))] = value
 })
 module.exports = {
   entry,
@@ -54,52 +54,11 @@ module.exports = {
       { // 编译css
         test:/\.css$/,
         exclude: /node_modules/,
-        use: ExtractTextPlugin.extract({
-          use: [
-            {
-              loader: 'css-loader'
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                ident: 'postcss',
-                plugins: (loader) => [
-                  require('autoprefixer')({
-                    remove: false,
-                    browsers: ['ie >= 8', '> 1% in CN'], // 浏览器兼容情况
-                  })
-                ]
-              }
-            },
-          ],
-          publicPath: '../', // 用来指向根目录(压缩后dist根目录)
-        })
+        loader: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader']
       }, { // 编译sass
         test:/\.scss$/,
         exclude: /node_modules/,
-        use: ExtractTextPlugin.extract({
-          use: [
-            {
-              loader: 'css-loader'
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                ident: 'postcss',
-                plugins: (loader) => [
-                  require('autoprefixer')({
-                    remove: false,
-                    browsers: ['ie >= 8', '> 1% in CN'], // 浏览器兼容情况
-                  })
-                ]
-              }
-            },
-            {
-              loader: 'sass-loader'
-            },
-          ],
-          publicPath: '../', // 用来指向根目录(压缩后dist根目录)
-        })
+        loader: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader']
       }, { // 解析html文件中引入的img图片
         test: /\.(htm|html)$/,
         loader: 'html-withimg-loader',
@@ -120,9 +79,11 @@ module.exports = {
       'MSG2': JSON.stringify('webpack is good tool---'),
       'MSG3': 123
     }),
-    new CleanWebpackPlugin(path.resolve(__dirname, './dist')), // 清除dist构建目录文件
     ...HtmlWebpackPluginArr, // html们
     new optimizeCss(), // css的压缩
-    new ExtractTextPlugin('css/[name].css'), // css文件拆分插件
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].[hash].css',
+      // chunkFilename: "styles.[contentHash:8].css"   //把css文件单独打包
+    }),
   ]
 }
