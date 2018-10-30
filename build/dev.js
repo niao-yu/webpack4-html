@@ -26,8 +26,10 @@ module.exports = new Promise((resolve, reject) => {
         // 前台开发本地服务插件
         devServer: {
           contentBase: path.resolve(__dirname, '../dist'), //路径(注意:加点-此路径为相对 output 的相对路径;不加点:此盘的绝对路径)
+          // publicPath: '/',
           port: port, // 端口
-          hot: true, // 热更新
+          // hot: true, // 热更新
+          progress: true, // 显示打包进度
           compress: true, // 服务器压缩式，一般为true
           inline: true, // 实时刷新
           // overlay: DEV.errorOverlay ? { warnings: false, errors: true } : false, // 消息提示控制
