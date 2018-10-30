@@ -11,7 +11,6 @@ let entry = {}
 let HtmlWebpackPluginArr = []
 html_arr.forEach(value => {
   let name = value.slice(value.lastIndexOf('/') + 1, value.lastIndexOf('.'))
-  console.log(value.slice(0, value.lastIndexOf('.')) + '.ejs')
   let temp = new HtmlWebpackPlugin({ // 解析html插件
     template: path.resolve(__dirname, value.slice(0, value.lastIndexOf('.')) + '.ejs'), // 路径
     filename: `${name}.html`, // 文件名:默认为index.html
@@ -34,14 +33,6 @@ module.exports = {
     path: path.resolve(__dirname, './dist'), // 加点为相对路径,否则为此盘的绝对路径
     // publicPath: '../../../../build/',
     filename: 'js/[name].js'
-  },
-  // 前台开发本地服务插件
-  devServer: {
-    contentBase: './dist/', //路径(注意:加点-此路径为相对 output 的相对路径;不加点:此盘的绝对路径)
-    port: '8085', // 端口
-    compress: true, // 服务器压缩式，一般为true
-    inline: true, // 实时刷新
-    open: false // 服务启动,自动打开浏览器
   },
   // 加载器
   module: {

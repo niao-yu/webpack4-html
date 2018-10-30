@@ -4,7 +4,6 @@ const merge = require('webpack-merge')
 const CleanWebpackPlugin = require('clean-webpack-plugin') // 用于在构建前清除dist目录中的内容
 const webpackConfig = require('../webpack.config')
 process.env.NODE_ENV = 'production';
-// webpackConfig.devtool = 'cheap-module-source-map'
 // 清除dist构建目录文件
 let config = merge(webpackConfig, {
   mode: 'production',
