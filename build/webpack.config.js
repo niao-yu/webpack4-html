@@ -86,7 +86,7 @@ module.exports = {
     new optimizeCss(), // css的压缩
     new MiniCssExtractPlugin({
       filename: 'css/[name].[hash].css',
-      // chunkFilename: "styles.[contentHash:8].css"   //把css文件单独打包
+      // chunkFilename: 'styles.[contentHash:8].css'   //把css文件单独打包
     }),
     // 复制插件
     new CopyWebpackPlugin([
@@ -96,5 +96,17 @@ module.exports = {
         // ignore: '' // 忽略的文件
       },
     ])
-  ]
+  ],
+  // 代码拆分,取代 CommonsChunkPlugin
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          name: 'commons',
+          chunks: 'initial',
+          minChunks: 2
+        }
+      }
+    }
+  },
 }

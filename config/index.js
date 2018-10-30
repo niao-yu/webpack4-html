@@ -11,11 +11,11 @@ module.exports = {
   DEV: {
     ...defaultConfig,
     port: 8085,
-    devtool: 'cheap-module-eval-source-map',
+    devtool: 'cheap-module-eval-source-map', // false 或具体的 map 配置
     autoOpenBrowser: false,
   },
   BUILD: {
     ...defaultConfig,
-    devtool: '#source-map',
+    devtool: '#source-map', // false 或具体的 map 配置
   },
 }
