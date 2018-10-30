@@ -25,7 +25,7 @@ html_arr.forEach(value => {
       removeEmptyAttributes: true,//去除空属性
       collapseWhitespace: true//去除空格
     },
-    chunks: ['main', `${name}`], // 自动引入的js文件
+    chunks: ['runtime', 'main', `${name}`], // 自动引入的js文件
     chunksSortMode: 'manual', // 设置引入js的文件, 按数组的顺序引入
   })
   HtmlWebpackPluginArr.push(temp)
@@ -67,7 +67,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader']
       }, { // 解析html文件中引入的img图片
-        test: /\.(htm|html)$/,
+        test: /\.(htm|html|ejs)$/,
         loader: 'html-withimg-loader',
       }, { // 解析通过css引入的图片
         test: /\.(jpg|jpeg|png|gif)$/,
@@ -107,95 +107,6 @@ module.exports = {
     new webpack.ProvidePlugin({ // 全局变量
       $: 'jquery',
       jQuery: 'jquery',
-    })
+    }),
   ],
-  // optimization: {
-  //   splitChunks: {
-  //     chunks: 'all',
-  //     minSize: 30000,
-  //     maxSize: 0,
-  //     minChunks: 1,
-  //     maxAsyncRequests: 5,
-  //     maxInitialRequests: 3,
-  //     automaticNameDelimiter: '~',
-  //     name: true,
-  //     cacheGroups: {
-  //       vendors: {
-  //         test: /[\\/]node_modules[\\/]/,
-  //         priority: -10
-  //       },
-  //       default: {
-  //         minChunks: 2,
-  //         priority: -20,
-  //         reuseExistingChunk: true
-  //       }
-  //     }
-  //   }
-  // }
-  // optimization: {
-  //   runtimeChunk: {
-  //     name: 'manifest'
-  //   },
-  //   splitChunks: {
-  //     chunks: 'async',
-  //     minSize: 30000,
-  //     minChunks: 1,
-  //     maxAsyncRequests: 5,
-  //     maxInitialRequests: 3,
-  //     name: false,
-  //     cacheGroups: {
-  //       vendor: {
-  //         name: 'vendor',
-  //         chunks: 'initial',
-  //         priority: -10,
-  //         reuseExistingChunk: false,
-  //         test: /node_modules\/(.*)\.js/
-  //       }
-  //     }
-  //   }
-  // },
-  // 代码拆分,取代 CommonsChunkPlugin
-  // optimization: {
-  //   splitChunks: {
-  //     cacheGroups: {
-  //       commons: {
-  //         name: 'commons',
-  //         chunks: 'initial',
-  //         minChunks: 2
-  //       }
-  //     }
-  //   }
-  // },
-
-  // optimization: {
-  //   runtimeChunk: {
-  //     name: 'manifest'
-  //   },
-  //   minimizer: true, // [new UglifyJsPlugin({...})]
-  //   splitChunks: {
-  //     chunks: 'async',
-  //     minSize: 30000,
-  //     minChunks: 1,
-  //     maxAsyncRequests: 5,
-  //     maxInitialRequests: 3,
-  //     name: false,
-  //     cacheGroups: {
-  //       vendor: {
-  //         name: 'vendor',
-  //         chunks: 'initial',
-  //         priority: -10,
-  //         reuseExistingChunk: false,
-  //         test: /node_modules\/(.*)\.js/
-  //       },
-  //       styles: {
-  //         name: 'styles',
-  //         test: /\.(scss|css)$/,
-  //         chunks: 'all',
-  //         minChunks: 1,
-  //         reuseExistingChunk: true,
-  //         enforce: true
-  //       }
-  //     }
-  //   }
-  // },
 }

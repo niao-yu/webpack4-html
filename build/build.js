@@ -17,7 +17,54 @@ let config = merge(webpackConfig, {
       root: path.resolve(__dirname, '../'),
       verbose: true
     })
-  ]
+  ],
+  // 代码拆分抽离公共模块
+  optimization: {
+    minimize: true, //是否进行代码压缩
+    splitChunks: {
+      chunks: 'async',
+      minSize: 30000, //模块大于30k会被抽离到公共模块
+      minChunks: 1, //模块出现1次就会被抽离到公共模块
+      maxAsyncRequests: 5, //异步模块，一次最多只能被加载5个
+      maxInitialRequests: 3, //入口模块最多只能加载3个
+      name: true,
+      cacheGroups: {
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true,
+        },
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10
+        }
+      }
+    },
+    runtimeChunk: {
+      name: 'runtime'
+    }
+  }
+  // optimization: {
+  //   runtimeChunk: {
+  //     name: 'manifest',
+  //   },
+  //   splitChunks: {
+  //     minSize: 20000, // 超过20k才会被打包
+  //     cacheGroups: {
+  //       vendor: {
+  //         name: 'vendor',
+  //         test: /[\\/]node_modules[\\/]/,
+  //         chunks: 'all',
+  //         minChunks: 1
+  //       },
+  //       commons: {
+  //         name: 'commons',
+  //         chunks: 'all',
+  //         minChunks: 2
+  //       }
+  //     }
+  //   }
+  // }
 })
 
 const spinner = ora('building for production...')
