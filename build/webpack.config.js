@@ -3,7 +3,7 @@ const path = require('path')
 const glob = require('glob')
 const HtmlWebpackPlugin = require('html-webpack-plugin') // 解析html插件
 let CopyWebpackPlugin = require('copy-webpack-plugin') // 整体直接复制的插件
-// const ExtractTextPlugin = require('extract-text-webpack-plugin') // css文件拆分插件 注:下载时候为extract-text-webpack-plugin@next
+var ImageminPlugin = require('imagemin-webpack-plugin').default // 优化图片的插件
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')  //处理css工具
 const optimizeCss = require('optimize-css-assets-webpack-plugin') // css 压缩插件
 
@@ -25,7 +25,7 @@ html_arr.forEach(value => {
       removeEmptyAttributes: true,//去除空属性
       collapseWhitespace: true//去除空格
     },
-    chunks: ['runtime', 'main', `${name}`], // 自动引入的js文件
+    chunks: ['vendors', 'commons', 'runtime', 'main', `${name}`], // 自动引入的js文件
     chunksSortMode: 'manual', // 设置引入js的文件, 按数组的顺序引入
   })
   HtmlWebpackPluginArr.push(temp)
@@ -85,11 +85,6 @@ module.exports = {
   },
   // 插件
   plugins: [
-    new webpack.DefinePlugin({ // 插入编译后代码中的全局变量
-      'MSG1': '\'webpack is good tool\'',
-      'MSG2': JSON.stringify('webpack is good tool---'),
-      'MSG3': 123
-    }),
     ...HtmlWebpackPluginArr, // html们
     new optimizeCss(), // css的压缩
     new MiniCssExtractPlugin({
@@ -108,5 +103,38 @@ module.exports = {
       $: 'jquery',
       jQuery: 'jquery',
     }),
+    new ImageminPlugin({
+      disable: process.env.NODE_ENV !== 'production', // 开发时不启用
+      pngquant: { //图片质量
+        quality: '95-100'
+      }
+    }),
   ],
+  optimization: {
+    minimize: true, //是否进行代码压缩
+    splitChunks: {
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          minSize: 30000,
+          minChunks: 1,
+          chunks: 'initial',
+          priority: 1 // 该配置项是设置处理的优先级，数值越大越优先处理
+        },
+        commons: {
+          test: /[\\/]src[\\/]common[\\/]/,
+          name: 'commons',
+          minSize: 30000,
+          minChunks: 3,
+          chunks: 'initial',
+          priority: -1,
+          reuseExistingChunk: true // 这个配置允许我们使用已经存在的代码块
+        }
+      }
+    },
+    runtimeChunk: {
+      name: 'runtime'
+    }
+  }
 }

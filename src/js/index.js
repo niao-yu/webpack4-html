@@ -1,7 +1,7 @@
 
 
-console.log(33)
 import '@/css/index.scss'
+console.log(345, NODE_ENV)
 // import '@/css/aaa.scss'
 // import '../css/index.scss'
 let a = ['111', '23', 'asf']

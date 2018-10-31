@@ -7,10 +7,7 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin') // 更友
 
 const { DEV } = require('../config/index')
 
-
 process.env.NODE_ENV = 'development';
-// webpackConfig.devtool = 'cheap-module-eval-source-map'
-
 
 module.exports = new Promise((resolve, reject) => {
   portfinder.basePort = DEV.port
@@ -37,13 +34,13 @@ module.exports = new Promise((resolve, reject) => {
           quiet: true, // necessary for FriendlyErrorsPlugin
         },
         plugins: [
-          new FriendlyErrorsPlugin({
+          new webpack.DefinePlugin({ // 插入编译后代码中的全局变量
+            'NODE_ENV': JSON.stringify('development'),
+          }),
+          new FriendlyErrorsPlugin({ // 编译完成提示
             compilationSuccessInfo: {
               messages: [`Your application is running here: http://localhost:${port}`],
             },
-            // onErrors: config.dev.notifyOnErrors
-            //   ? utils.createNotifierCallback()
-            //   : undefined
           })
         ]
       })
