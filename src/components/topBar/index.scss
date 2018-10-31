@@ -1,0 +1,9 @@
+.topBar {
+  color: red;
+  &:after {
+    content: 'veee';
+    display: block;
+    background-color: #fff;
+    color: #000;
+  }
+}

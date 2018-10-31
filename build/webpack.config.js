@@ -9,12 +9,12 @@ const optimizeCss = require('optimize-css-assets-webpack-plugin') // css 压缩�
 
 const { defaultConfig } = require('../config/index')
 
-let js_arr = glob.sync(path.join(defaultConfig.entry, '/js/**/*.js')) // js入口文件
-let html_arr = glob.sync(path.join(defaultConfig.entry, '/pages/**/*.*')) // 页面口文件
+let js_arr = glob.sync(path.join(defaultConfig.entry, '/pages/**/*.js')) // js入口文件
+let router = glob.sync(path.join(defaultConfig.entry, '/router/*.js')) // 页面口文件
 let entry = {}
 let HtmlWebpackPluginArr = []
 // 遍历处理html的文件们
-html_arr.forEach(value => {
+router.forEach(value => {
   let name = value.slice(value.lastIndexOf('/') + 1, value.lastIndexOf('.'))
   let temp = new HtmlWebpackPlugin({ // 解析html插件
     template: path.resolve(__dirname, value), // 路径
@@ -61,11 +61,21 @@ module.exports = {
       { // 编译css
         test:/\.css$/,
         exclude: /node_modules/,
-        loader: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader']
+        use: [{
+          loader: MiniCssExtractPlugin.loader,
+          options: {
+            publicPath: '../',
+          }
+        }, 'css-loader', 'postcss-loader']
       }, { // 编译sass
         test:/\.scss$/,
         exclude: /node_modules/,
-        loader: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader']
+        use: [{
+          loader: MiniCssExtractPlugin.loader,
+          options: {
+            publicPath: '../',
+          }
+        }, 'css-loader', 'postcss-loader', 'sass-loader']
       }, { // 解析html文件中引入的img图片
         test: /\.(htm|html|ejs)$/,
         loader: 'html-withimg-loader',
@@ -74,11 +84,12 @@ module.exports = {
         loader: 'ejs-loader',
       }, { // 解析通过css引入的图片
         test: /\.(jpg|jpeg|png|gif)$/,
-        use: ['url-loader?limit=1024&name=./imgs/[name].[hash].[ext]'] // 带参数,可拆分入文件夹并设置大小
+        loader: 'url-loader?limit=1024&name=./imgs/[name].[hash].[ext]',
+        // use: ['url-loader?limit=1024&name=./imgs/[name].[hash].[ext]'] // 带参数,可拆分入文件夹并设置大小
       },
       { // 解析字体图标
         test: /\.(woff|ttf|svg|eot|xttf|woff2)$/,
-        use: 'file-loader?name=./fonts/[name].[hash].[ext]'
+        use: 'file-loader?name=./fonts/[name].[hash].[ext]',
       },
     ]
   },
