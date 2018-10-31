@@ -20,10 +20,10 @@ html_arr.forEach(value => {
     template: path.resolve(__dirname, value), // 路径
     filename: `${name}.html`, // 文件名:默认为index.html
     minify: { // 使用的功能
-      removeAttributeQuotes: true,//去除引号
-      removeComments: true,//去除注释
-      removeEmptyAttributes: true,//去除空属性
-      collapseWhitespace: true//去除空格
+      removeAttributeQuotes: true, // 去除引号
+      removeComments: true, // 去除注释
+      removeEmptyAttributes: true, // 去除空属性
+      collapseWhitespace: true, // 去除空格
     },
     chunks: ['vendors', 'commons', 'runtime', 'main', `${name}`], // 自动引入的js文件
     chunksSortMode: 'manual', // 设置引入js的文件, 按数组的顺序引入
@@ -45,7 +45,7 @@ module.exports = {
   },
   // 配置全局路径变量
   resolve: {
-    extensions: ['.js', 'scss', '.json'],
+    extensions: ['.js', '.scss', '.ejs', '.json'], // 引入可以不加后缀名
     alias: {
       '@': path.join(__dirname, '../src')
     }
@@ -69,6 +69,9 @@ module.exports = {
       }, { // 解析html文件中引入的img图片
         test: /\.(htm|html|ejs)$/,
         loader: 'html-withimg-loader',
+      }, {
+        test: /\.(ejs)$/,
+        loader: 'ejs-loader',
       }, { // 解析通过css引入的图片
         test: /\.(jpg|jpeg|png|gif)$/,
         use: ['url-loader?limit=1024&name=./imgs/[name].[hash].[ext]'] // 带参数,可拆分入文件夹并设置大小
@@ -76,10 +79,6 @@ module.exports = {
       { // 解析字体图标
         test: /\.(woff|ttf|svg|eot|xttf|woff2)$/,
         use: 'file-loader?name=./fonts/[name].[hash].[ext]'
-      },
-      { // 解析字体图标
-        test: /static\//,
-        use: 'file-loader',
       },
     ]
   },
@@ -103,6 +102,7 @@ module.exports = {
       $: 'jquery',
       jQuery: 'jquery',
     }),
+    // 图片优化插件
     new ImageminPlugin({
       disable: process.env.NODE_ENV !== 'production', // 开发时不启用
       pngquant: { //图片质量
