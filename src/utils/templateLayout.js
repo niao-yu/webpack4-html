@@ -7,7 +7,9 @@ let templateLayout = {}
 
 // 组件
 templateLayout.some = some()
+
 templateLayout.one = one()
+
 templateLayout.topBar = topBar({
   some: templateLayout.some,
   one: templateLayout.one,
