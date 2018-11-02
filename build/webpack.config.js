@@ -8,16 +8,17 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')  //处理css工�
 const optimizeCss = require('optimize-css-assets-webpack-plugin') // css 压缩插件
 
 const { defaultConfig } = require('../config/index')
-
+process.env.flag = -1
 let js_arr = glob.sync(path.join(defaultConfig.entry, '/pages/**/*.js')) // js入口文件
-let router = glob.sync(path.join(defaultConfig.entry, '/router/*.js')) // 页面口文件
+let router = glob.sync(path.join(defaultConfig.entry, '/pages/**/*.ejs')) // 页面口文件
 let entry = {}
 let HtmlWebpackPluginArr = []
+console.log(router)
 // 遍历处理html的文件们
-router.forEach(value => {
-  let name = value.slice(value.lastIndexOf('/') + 1, value.lastIndexOf('.'))
+for (let i = 0; i < router.length; i++) {
+  let name = router[i].slice(router[i].lastIndexOf('/') + 1, router[i].lastIndexOf('.'))
   let temp = new HtmlWebpackPlugin({ // 解析html插件
-    template: path.resolve(__dirname, value), // 路径
+    template: router[i], // 路径
     filename: `${name}.html`, // 文件名:默认为index.html
     minify: { // 使用的功能
       removeAttributeQuotes: true, // 去除引号
@@ -29,7 +30,23 @@ router.forEach(value => {
     chunksSortMode: 'manual', // 设置引入js的文件, 按数组的顺序引入
   })
   HtmlWebpackPluginArr.push(temp)
-})
+}
+// router.forEach(value => {
+//   let name = value.slice(value.lastIndexOf('/') + 1, value.lastIndexOf('.'))
+//   let temp = new HtmlWebpackPlugin({ // 解析html插件
+//     template: path.resolve(__dirname, value), // 路径
+//     filename: `${name}.html`, // 文件名:默认为index.html
+//     minify: { // 使用的功能
+//       removeAttributeQuotes: true, // 去除引号
+//       removeComments: true, // 去除注释
+//       removeEmptyAttributes: true, // 去除空属性
+//       collapseWhitespace: true, // 去除空格
+//     },
+//     chunks: ['vendors', 'commons', 'runtime', 'main', `${name}`], // 自动引入的js文件
+//     chunksSortMode: 'manual', // 设置引入js的文件, 按数组的顺序引入
+//   })
+//   HtmlWebpackPluginArr.push(temp)
+// })
 // 遍历处理入口js们
 js_arr.forEach(value => {
   entry[value.slice(value.lastIndexOf('/') + 1, value.lastIndexOf('.'))] = value
@@ -120,7 +137,11 @@ module.exports = {
         quality: '95-100'
       }
     }),
+    new webpack.DefinePlugin({ // 插入编译后代码中的全局变量
+      'webpack_flag': JSON.stringify(-1)
+    }),
   ],
+  // 共用代码拆分
   optimization: {
     minimize: true, //是否进行代码压缩
     splitChunks: {
