@@ -1,2 +1,2 @@
 import './index.scss';
-console.log('some')
+console.log('这里是some')
