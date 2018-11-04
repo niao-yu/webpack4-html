@@ -17,7 +17,7 @@ arr.push(layout.page({
   content: 'home'
 }))
 if (process.env.flag === undefined) process.env.flag = -1
-if ((process.env.flag + 1) < arr.length) {
+else if ((process.env.flag + 1) < arr.length) {
   process.env.flag++
   module.exports = arr[process.env.flag]
 } else module.exports = false

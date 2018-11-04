@@ -1,5 +1,7 @@
-<%= topBar %>
+<!-- < %= require('@/components/topBar/index.ejs')() %> -->
+<%= require('@/utils/getRes.js').component('index', 'topBar') %>
 <div class="div">
-  <span>这里是index</span>
-  <img src="<%= require('@/imgs/email.png') %>" alt="">
+  <span class="span">这里是index <%= require('@/imgs/email.png') %> </span>
+  <span>第1张图片</span><img src="<%= require('@/imgs/email.png') %>" alt="">
+  <div class="use">use</div>
 </div>
