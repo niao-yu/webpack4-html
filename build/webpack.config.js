@@ -31,9 +31,6 @@ pages.forEach(value => {
   })
   HtmlWebpackPluginArr.push(temp)
 })
-// router.forEach(value => {
-
-// })
 // 遍历处理入口js们
 js_arr.forEach(value => {
   let tempArr = value.split('/')
