@@ -1,3 +1,4 @@
+<%= require('@/utils/getHtml.js').up({title: '这里是首页'}) %>
 <%= require('@/components/topBar/index.ejs')({
   abc: 200
 }) %>
@@ -5,3 +6,4 @@
   <span>这里是index</span>
   <!-- <img src="< %= require('@/imgs/email.png') %>" alt=""> -->
 </div>
+<%= require('@/utils/getHtml.js').down() %>

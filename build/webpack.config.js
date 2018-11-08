@@ -10,29 +10,35 @@ const optimizeCss = require('optimize-css-assets-webpack-plugin') // css 压缩�
 const { defaultConfig, DEV, BUILD } = require('../config/index')
 
 let js_arr = glob.sync(path.join(defaultConfig.entry, '/pages/**/*.js')) // js入口文件
-let router = glob.sync(path.join(defaultConfig.entry, '/router/*.js')) // 页面口文件
+let pages = glob.sync(path.join(defaultConfig.entry, '/pages/**/*.ejs')) // 页面口文件
 let entry = {}
 let HtmlWebpackPluginArr = []
 // 遍历处理html的文件们
-router.forEach(value => {
-  let name = value.slice(value.lastIndexOf('/') + 1, value.lastIndexOf('.'))
+pages.forEach(value => {
+  let tempArr = value.split('/')
+  let name = tempArr[tempArr.length - 2]
   let temp = new HtmlWebpackPlugin({ // 解析html插件
     template: path.resolve(__dirname, value), // 路径
     filename: `${name}.html`, // 文件名:默认为index.html
     minify: { // 使用的功能
-      // removeAttributeQuotes: true, // 去除引号
-      // removeComments: true, // 去除注释
-      // removeEmptyAttributes: true, // 去除空属性
-      // collapseWhitespace: true, // 去除空格
+      removeAttributeQuotes: true, // 去除引号
+      removeComments: true, // 去除注释
+      removeEmptyAttributes: true, // 去除空属性
+      collapseWhitespace: true, // 去除空格
     },
     chunks: ['vendors', 'commons', 'runtime', 'main', `${name}`], // 自动引入的js文件
     chunksSortMode: 'manual', // 设置引入js的文件, 按数组的顺序引入
   })
   HtmlWebpackPluginArr.push(temp)
 })
+// router.forEach(value => {
+
+// })
 // 遍历处理入口js们
 js_arr.forEach(value => {
-  entry[value.slice(value.lastIndexOf('/') + 1, value.lastIndexOf('.'))] = value
+  let tempArr = value.split('/')
+  let name = tempArr[tempArr.length - 2]
+  entry[name] = value
 })
 
 module.exports = {
