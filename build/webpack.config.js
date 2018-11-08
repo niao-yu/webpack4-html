@@ -7,7 +7,7 @@ var ImageminPlugin = require('imagemin-webpack-plugin').default // 优化图片�
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')  //处理css工具
 const optimizeCss = require('optimize-css-assets-webpack-plugin') // css 压缩插件
 
-const { defaultConfig } = require('../config/index')
+const { defaultConfig, DEV, BUILD } = require('../config/index')
 
 let js_arr = glob.sync(path.join(defaultConfig.entry, '/pages/**/*.js')) // js入口文件
 let router = glob.sync(path.join(defaultConfig.entry, '/router/*.js')) // 页面口文件
@@ -39,6 +39,7 @@ module.exports = {
   entry, // => {index: '...', homePage: '...', ...}
   output: {
     path: defaultConfig.output, // 加点为相对路径,否则为此盘的绝对路径
+    publicPath: process.env.NODE_ENV === 'production' ? BUILD.assetsPublicPath : DEV.assetsPublicPath,
     // publicPath: '/',
     // publicPath: defaultConfig.output,
     filename: 'js/[name].[hash].js'
