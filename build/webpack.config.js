@@ -20,10 +20,10 @@ router.forEach(value => {
     template: path.resolve(__dirname, value), // 路径
     filename: `${name}.html`, // 文件名:默认为index.html
     minify: { // 使用的功能
-      removeAttributeQuotes: true, // 去除引号
-      removeComments: true, // 去除注释
-      removeEmptyAttributes: true, // 去除空属性
-      collapseWhitespace: true, // 去除空格
+      // removeAttributeQuotes: true, // 去除引号
+      // removeComments: true, // 去除注释
+      // removeEmptyAttributes: true, // 去除空属性
+      // collapseWhitespace: true, // 去除空格
     },
     chunks: ['vendors', 'commons', 'runtime', 'main', `${name}`], // 自动引入的js文件
     chunksSortMode: 'manual', // 设置引入js的文件, 按数组的顺序引入
@@ -40,8 +40,6 @@ module.exports = {
   output: {
     path: defaultConfig.output, // 加点为相对路径,否则为此盘的绝对路径
     publicPath: process.env.NODE_ENV === 'production' ? BUILD.assetsPublicPath : DEV.assetsPublicPath,
-    // publicPath: '/',
-    // publicPath: defaultConfig.output,
     filename: 'js/[name].[hash].js'
   },
   // 配置全局路径变量

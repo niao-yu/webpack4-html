@@ -1,4 +1,5 @@
 const webpack = require('webpack')
+process.env.NODE_ENV = 'production';
 const path = require('path')
 const merge = require('webpack-merge')
 const CleanWebpackPlugin = require('clean-webpack-plugin') // 用于在构建前清除dist目录中的内容
@@ -7,7 +8,6 @@ const ora = require('ora') // 在终端显示文字/图标的插件
 
 const { BUILD } = require('../config/index')
 
-process.env.NODE_ENV = 'production';
 
 // 清除dist构建目录文件
 let config = merge(webpackConfig, {
