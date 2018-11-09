@@ -6,8 +6,10 @@ let up_arr = arr[0].split('${title}')
 
 
 module.exports = {
-  up: ({ title = 'title' }) => {
-    let string = up_arr[0] + title + up_arr[1]
+  up: ({ title = undefined }) => {
+    let string
+    if (!title || (up_arr.length === 1)) string = up_arr[0]
+    else string = up_arr[0] + title + up_arr[1]
     return string
   },
   down: () => {
