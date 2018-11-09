@@ -109,7 +109,7 @@ module.exports = {
     // 复制插件
     new CopyWebpackPlugin([
       {
-        from: path.join(defaultConfig.entry, '/static'),
+        from: path.join(defaultConfig.entry, '../static'),
         to: path.join(defaultConfig.output, '/static'),
         // ignore: '' // 忽略的文件
       },

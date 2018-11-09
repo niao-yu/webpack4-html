@@ -14,4 +14,3 @@ package-lock.json
 *.njsproj
 *.sln
 *.map
-static/diagram
