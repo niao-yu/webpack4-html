@@ -35,7 +35,9 @@ pages.forEach(value => {
 js_arr.forEach(value => {
   let tempArr = value.split('/')
   let name = tempArr[tempArr.length - 2]
-  entry[name] = value
+  entry[name] = [
+    value
+  ]
 })
 
 module.exports = {
@@ -47,7 +49,7 @@ module.exports = {
   },
   // 配置全局路径变量
   resolve: {
-    extensions: ['.js', '.scss', '.ejs', '.json'], // 引入可以不加后缀名
+    extensions: ['.js'], // 引入可以不加后缀名
     alias: {
       '@': path.join(__dirname, '../src')
     }
@@ -58,7 +60,8 @@ module.exports = {
       { // 编译 es6
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
+        loader: 'babel-loader',
+        // include: [path.join(__dirname, 'src'), path.join(__dirname, 'node_modules/webpack-dev-server/client')],
       },
       { // 编译css
         test:/\.css$/,
