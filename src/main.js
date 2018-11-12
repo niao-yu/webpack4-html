@@ -1,21 +1,15 @@
-// module.exports = {
-//   index: require('./index.ejs')({
-//     content: require('./js/index.js')({
-//       topBar: require('./components/topBar/index.ejs')
-//     })
-//   })
-// }
-// import mainPage from '@/index.ejs';
-// import index from '@/pages/index.ejs';
-// import topBar from '@/components/topBar/index.ejs';
-// // import '@/css/index.scss'
-// // console.log(345, NODE_ENV)
-// // let aaa = mainPage({
-// //   content: index()
-// // })
-// // console.log(aaa)
-// module.exports = mainPage({
-//     content: index({
-//       topBar: topBar()
-//     })
-//   })
+import 'reset-css'
+let innerWidth
+let resize = () => {
+  innerWidth = $(window).width()
+  document.documentElement.style.fontSize = innerWidth / 16 + 'px'
+  let width = window.innerWidth || document.body.clientWidth
+  width <= 800 ? innerWidth = true : innerWidth = false
+}
+window.onresize = () => {
+  window.location.reload()
+}
+resize()
+module.exports = {
+  innerWidth,
+}

@@ -3,7 +3,7 @@ const path = require('path')
 const glob = require('glob')
 const HtmlWebpackPlugin = require('html-webpack-plugin') // 解析html插件
 let CopyWebpackPlugin = require('copy-webpack-plugin') // 整体直接复制的插件
-var ImageminPlugin = require('imagemin-webpack-plugin').default // 优化图片的插件
+let ImageminPlugin = require('imagemin-webpack-plugin').default // 优化图片的插件
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')  //处理css工具
 const optimizeCss = require('optimize-css-assets-webpack-plugin') // css 压缩插件
 
@@ -36,51 +36,64 @@ js_arr.forEach(value => {
   let tempArr = value.split('/')
   let name = tempArr[tempArr.length - 2]
   entry[name] = [
-    value
+    value,
   ]
 })
+entry['main'] = glob.sync(path.join(defaultConfig.entry, '/main.js'))
 
 module.exports = {
   entry, // => {index: '...', homePage: '...', ...}
   output: {
     path: defaultConfig.output, // 加点为相对路径,否则为此盘的绝对路径
     publicPath: process.env.NODE_ENV === 'production' ? BUILD.assetsPublicPath : DEV.assetsPublicPath,
-    filename: 'js/[name].[hash].js'
+    filename: 'js/[name].[hash].js',
   },
   // 配置全局路径变量
   resolve: {
     extensions: ['.js'], // 引入可以不加后缀名
     alias: {
-      '@': path.join(__dirname, '../src')
-    }
+      '#': path.join(__dirname, '/util'),
+      '@': path.join(__dirname, '../src'),
+    },
   },
   // 加载器
   module: {
     rules: [
+      { // eslint校验
+        test: /\.js$/,
+        enforce: 'pre', // 编译前检查
+        use: {
+          loader: 'eslint-loader',
+          options: {
+            formatter: require('eslint-friendly-formatter'), // 默认的错误提示方式
+          },
+        },
+        include: defaultConfig.entry,
+        // exclude: /node_modules/,
+      },
       { // 编译 es6
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
-        // include: [path.join(__dirname, 'src'), path.join(__dirname, 'node_modules/webpack-dev-server/client')],
       },
       { // 编译css
         test:/\.css$/,
-        exclude: /node_modules/,
+        // exclude: /node_modules/,
         use: [{
           loader: MiniCssExtractPlugin.loader,
           options: {
             publicPath: '../',
-          }
-        }, 'css-loader', 'postcss-loader']
+          },
+        }, 'css-loader', 'postcss-loader'],
       }, { // 编译sass
         test:/\.scss$/,
-        exclude: /node_modules/,
+        // exclude: /node_modules/,
         use: [{
           loader: MiniCssExtractPlugin.loader,
           options: {
             publicPath: '../',
-          }
-        }, 'css-loader', 'postcss-loader', 'sass-loader']
+          },
+        }, 'css-loader', 'postcss-loader', 'sass-loader'],
       }, { // 解析html文件中引入的img图片
         test: /\.(htm|html|ejs)$/,
         loader: 'html-withimg-loader',
@@ -96,7 +109,7 @@ module.exports = {
         test: /\.(woff|ttf|svg|eot|xttf|woff2)$/,
         use: 'file-loader?name=./fonts/[name].[hash].[ext]',
       },
-    ]
+    ],
   },
   // 插件
   plugins: [
@@ -122,8 +135,8 @@ module.exports = {
     new ImageminPlugin({
       disable: process.env.NODE_ENV !== 'production', // 开发时不启用
       pngquant: { //图片质量
-        quality: '95-100'
-      }
+        quality: '95-100',
+      },
     }),
   ],
   optimization: {
@@ -136,7 +149,7 @@ module.exports = {
           minSize: 30000,
           minChunks: 1,
           chunks: 'initial',
-          priority: 1 // 该配置项是设置处理的优先级，数值越大越优先处理
+          priority: 1, // 该配置项是设置处理的优先级，数值越大越优先处理
         },
         commons: {
           test: /[\\/]src[\\/]common[\\/]/,
@@ -145,12 +158,12 @@ module.exports = {
           minChunks: 3,
           chunks: 'initial',
           priority: -1,
-          reuseExistingChunk: true // 这个配置允许我们使用已经存在的代码块
-        }
-      }
+          reuseExistingChunk: true, // 这个配置允许我们使用已经存在的代码块
+        },
+      },
     },
     runtimeChunk: {
-      name: 'runtime'
-    }
-  }
+      name: 'runtime',
+    },
+  },
 }

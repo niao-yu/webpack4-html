@@ -1,5 +1,5 @@
 const webpack = require('webpack')
-process.env.NODE_ENV = 'production';
+process.env.NODE_ENV = 'production'
 const path = require('path')
 const merge = require('webpack-merge')
 const CleanWebpackPlugin = require('clean-webpack-plugin') // 用于在构建前清除dist目录中的内容
@@ -16,10 +16,10 @@ let config = merge(webpackConfig, {
   plugins: [
     new CleanWebpackPlugin(path.resolve(__dirname, '../dist'), {
       root: path.resolve(__dirname, '../'),
-      verbose: true
+      verbose: true,
     }),
     new webpack.DefinePlugin({ // 插入编译后代码中的全局变量
-      'NODE_ENV': JSON.stringify('production')
+      'NODE_ENV': JSON.stringify('production'),
     }),
   ],
 })
@@ -27,16 +27,16 @@ let config = merge(webpackConfig, {
 const spinner = ora('building for production...')
 spinner.start()
 
-webpack(config, function (err, stats) {
+webpack(config, function(err, stats) {
   spinner.stop()
-  if (err) throw err;
+  if (err) throw err
   process.stdout.write(stats.toString({
     colors: true,
     modules: false,
     children: false,
     compress: true, // 是否启用gzip压缩
     chunks: false,
-    clientLogLevel: 'none', 
-    chunkModules: false
+    clientLogLevel: 'none',
+    chunkModules: false,
   }) + '\n')
 })

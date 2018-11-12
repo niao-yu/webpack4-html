@@ -3,8 +3,6 @@ let arr = index.split('<content/>')
 if (arr.length <= 1) throw new errow('index.html文件中未获取内容标签 <content/>')
 let up_arr = arr[0].split('${title}')
 
-
-
 module.exports = {
   up: ({ title = undefined }) => {
     let string
@@ -15,5 +13,5 @@ module.exports = {
   down: () => {
     let string = arr[1]
     return string
-  }
+  },
 }
