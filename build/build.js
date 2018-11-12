@@ -39,4 +39,8 @@ webpack(config, function(err, stats) {
     clientLogLevel: 'none',
     chunkModules: false,
   }) + '\n')
+  console.log('\n\n')
+  console.log('\x1B[36m', 'Build complete.')
+  console.log('\x1B[33m%s\x1b[0m', 'Tip: built files are meant to be served over an HTTP server.')
+  console.log('\x1B[33m%s\x1b[0m', 'Opening index.html over file:// won\'t work.')
 })
