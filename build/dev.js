@@ -45,8 +45,21 @@ module.exports = new Promise((resolve, reject) => {
           }),
           new webpack.HotModuleReplacementPlugin(), // hot热更新需要
           new FriendlyErrorsPlugin({ // 编译完成提示
+            clearConsole: true, // 每次编译清空控制台
             compilationSuccessInfo: {
               messages: [`Your application is running here: http://localhost:${port}`],
+            },
+            onErrors: (severity, errors) => {
+              // const notifier = require('node-notifier')
+              if (severity !== 'error') return
+              console.log(errors[0].webpackError)
+              // const filename = error.file && error.file.split('!').pop()
+              // notifier.notify({
+              //   title: packageConfig.name,
+              //   message: severity + ': ' + error.name,
+              //   subtitle: filename || '',
+              //   icon: path.join(__dirname, 'logo.png'),
+              // })
             },
           }),
         ],
