@@ -5,6 +5,7 @@ const merge = require('webpack-merge')
 const webpackConfig = require('./webpack.config')
 const portfinder = require('portfinder') // 获取可用端口
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin') // 更友好的打印提示插件
+const packageConfig = require('../package.json') // 更友好的打印提示插件
 
 const { DEV } = require('../config/index')
 
@@ -45,21 +46,20 @@ module.exports = new Promise((resolve, reject) => {
           }),
           new webpack.HotModuleReplacementPlugin(), // hot热更新需要
           new FriendlyErrorsPlugin({ // 编译完成提示
-            clearConsole: true, // 每次编译清空控制台
             compilationSuccessInfo: {
               messages: [`Your application is running here: http://localhost:${port}`],
             },
             onErrors: (severity, errors) => {
-              // const notifier = require('node-notifier')
               if (severity !== 'error') return
-              console.log(errors[0].webpackError)
-              // const filename = error.file && error.file.split('!').pop()
-              // notifier.notify({
-              //   title: packageConfig.name,
-              //   message: severity + ': ' + error.name,
-              //   subtitle: filename || '',
-              //   icon: path.join(__dirname, 'logo.png'),
-              // })
+              const notifier = require('node-notifier')
+              const error = errors[0]
+              const filename = error.file && error.file.split('!').pop()
+              notifier.notify({
+                title: packageConfig.name,
+                message: severity + ': ' + error.name,
+                subtitle: filename || '',
+                icon: path.join(__dirname, 'logo.png'),
+              })
             },
           }),
         ],
