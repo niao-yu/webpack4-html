@@ -15,8 +15,9 @@ let entry = {}
 let HtmlWebpackPluginArr = []
 // 遍历处理html的文件们
 pages.forEach(value => {
+  let name = value.match(/pages\/(.*)\/index.ejs$/)[1] // html放置名称(带有路径信息)
   let tempArr = value.split('/')
-  let name = tempArr[tempArr.length - 2]
+  let jsName = tempArr[tempArr.length - 2] // 获取应有的js的名字
   let temp = new HtmlWebpackPlugin({ // 解析html插件
     template: path.resolve(__dirname, value), // 路径
     filename: `${name}.html`, // 文件名:默认为index.html
@@ -26,7 +27,7 @@ pages.forEach(value => {
       removeEmptyAttributes: true, // 去除空属性
       collapseWhitespace: true, // 去除空格
     },
-    chunks: ['vendors', 'commons', 'runtime', 'main', `${name}`], // 自动引入的js文件
+    chunks: ['vendors', 'commons', 'runtime', 'main', `${jsName}`], // 自动引入的js文件
     chunksSortMode: 'manual', // 设置引入js的文件, 按数组的顺序引入
   })
   HtmlWebpackPluginArr.push(temp)
@@ -62,6 +63,7 @@ module.exports = {
       { // eslint校验
         test: /\.js$/,
         enforce: 'pre', // 编译前检查
+        exclude: /(node_modules)/,
         use: {
           loader: 'eslint-loader',
           options: {
@@ -74,7 +76,7 @@ module.exports = {
       { // 编译 es6
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
+        loader: 'babel-loader?cacheDirectory=true', // 开启缓存将转译结果缓存至文件系统
       },
       { // 编译css
         test:/\.css$/,
