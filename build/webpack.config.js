@@ -9,8 +9,8 @@ const optimizeCss = require('optimize-css-assets-webpack-plugin') // css 压缩�
 
 const { defaultConfig, DEV, BUILD } = require('../config/index')
 
-let js_arr = glob.sync(path.join(defaultConfig.entry, '/pages/**/*.js')) // js入口文件
-let pages = glob.sync(path.join(defaultConfig.entry, '/pages/**/*.ejs')) // 页面口文件
+let js_arr = glob.sync(path.join(defaultConfig.entry, '/pages/**/index.js')) // js入口文件
+let pages = glob.sync(path.join(defaultConfig.entry, '/pages/**/index.ejs')) // 页面口文件
 let entry = {}
 let HtmlWebpackPluginArr = []
 // 遍历处理html的文件们
@@ -125,7 +125,7 @@ module.exports = {
     new CopyWebpackPlugin([
       {
         from: path.join(defaultConfig.entry, '../static'),
-        to: path.join(defaultConfig.output, '/static'),
+        to: path.join(defaultConfig.output, '/'),
         // ignore: '' // 忽略的文件
       },
     ]),
