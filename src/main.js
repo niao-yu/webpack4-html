@@ -6,9 +6,9 @@ let resize = () => {
   let width = window.innerWidth || document.body.clientWidth
   width <= 800 ? innerWidth = true : innerWidth = false
 }
-window.onresize = () => {
-  window.location.reload()
-}
+// window.onresize = () => {
+//   window.location.reload()
+// }
 resize()
 module.exports = {
   innerWidth,
