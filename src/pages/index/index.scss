@@ -33,18 +33,9 @@
     .home {
       height: 650px;
       // background: url('../../assets/imgs/banner_images.png') no-repeat center center;
-      background: url('../../assets/imgs/banner_images_2.png') no-repeat center top;
+      background: url('../../assets/imgs/banner_images.jpg') no-repeat center top;
       background-size: cover;
       position: relative;
-      // #world {
-      //   position: absolute;
-      //   width: 100%;
-      //   height: 650px;
-      //   display: block;
-      //   left: 0;
-      //   top: 0;
-      //   z-index: -1;
-      // }
       > div {
         position: absolute;
         height: 100%;
@@ -54,50 +45,6 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        // .text-box {
-        //   width: 520px;
-        //   height: 410px;
-        //   margin: 0 auto 130px;;
-        //   position: relative;
-        //   &::before {
-        //     position: absolute;
-        //     content: '';
-        //     display: block;
-        //     bottom: 84px;
-        //     left: 50%;
-        //     transform: translateX(-50%);
-        //     width: 50px;
-        //     height: 2px;
-        //     background-color: #fff;
-        //   }
-        //   > img {
-        //     position: absolute;
-        //     left: 50%;
-        //     transform: translateX(-50%);
-        //     &.line {
-        //       bottom: 0;
-        //       width: 100%;
-        //     }
-        //     &.blocktop {
-        //       width: 289px;
-        //       bottom: 116px;
-        //     }
-        //   }
-        //   > p {
-        //     position: absolute;
-        //     bottom: 38px;
-        //     width: auto;
-        //     left: 0;
-        //     white-space: nowrap;
-        //     display: block;
-        //     font-family: PingFangSC-Regular;
-        //     font-size: 22px;
-        //     color: #FFFFFF;
-        //     letter-spacing: 2px;
-        //     left: 50%;
-        //     transform: translateX(-50%);
-        //   }
-        // }
         .text-box_new {
           max-width: 1001px;
           width: 1000px;
@@ -132,12 +79,6 @@
             width: 12px;
           }
         }
-        // > img {
-        //   display: block;
-        //   width: 30px;
-        //   height: 30px;
-        //   margin: 0 auto;
-        // }
       }
     }
     .about {
@@ -194,16 +135,16 @@
               }
             }
             &:nth-child(1) > div{
-              background-image: url('../../assets/imgs/Service_icon_1.png');
+              background-image: url('../../assets/imgs/menu_black.png');
             }
             &:nth-child(2) > div{
-              background-image: url('../../assets/imgs/Service_icon_2.png');
+              background-image: url('../../assets/imgs/menu_black.png');
             }
             &:nth-child(3) > div{
-              background-image: url('../../assets/imgs/Service_icon_3.png');
+              background-image: url('../../assets/imgs/menu_black.png');
             }
             &:nth-child(4) > div{
-              background-image: url('../../assets/imgs/Service_icon_4.png');
+              background-image: url('../../assets/imgs/menu_black.png');
             }
             h3 {
               padding-top: 20px;
@@ -268,16 +209,16 @@
               left: 0;
             }
             &:nth-child(1) > div {
-              background-image: url('../../assets/imgs/impact_1.png');
+              background-image: url('../../assets/imgs/impact_3.png');
             }
             &:nth-child(2) > div {
-              background-image: url('../../assets/imgs/impact_2.png');
+              background-image: url('../../assets/imgs/impact_3.png');
             }
             &:nth-child(3) > div {
               background-image: url('../../assets/imgs/impact_3.png');
             }
             &:nth-child(4) > div {
-              background-image: url('../../assets/imgs/impact_4.png');
+              background-image: url('../../assets/imgs/impact_3.png');
             }
             h3 {
               font-family: PingFangSC-Medium;
@@ -306,7 +247,7 @@
       .logo {
         width: 240px;
         height: 110px;
-        background: url('../../assets/imgs/blocktop_logo_white.png') right bottom no-repeat;
+        background: url('../../assets/imgs/my_logo_white.png') right bottom no-repeat;
         background-size: contain;
       }
       p{
@@ -358,28 +299,7 @@
       .home {
         height: rem(1000rem);
         padding: 0;
-        // #world {
-        //   height: rem(1000rem);
-        // }
         > div {
-          // .text-box {
-          //   width: rem(700rem);
-          //   height: rem(638rem);
-          //   &::before {
-          //     bottom: rem(110rem);
-          //     width: rem(80rem);
-          //   }
-          //   > img {
-          //     &.blocktop {
-          //       width: rem(380rem);
-          //       bottom: rem(150rem);
-          //     }
-          //   }
-          //   > p {
-          //     bottom: rem(40rem);
-          //     font-size: rem(34rem);
-          //   }
-          // }
           .text-box_new {
             box-sizing: border-box;
             padding-top: rem(420rem);

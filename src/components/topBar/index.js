@@ -1,7 +1,5 @@
 import './index.scss'
-import { $t, setLang } from '@/utils/i18n'
 import { innerWidth } from '@/main'
-console.log(innerWidth)
 const dom = {
   body: $('body'),
   topBar: $('#topBar'),
@@ -35,11 +33,15 @@ if (innerWidth) { // 如果移动端
 }
 let bannerHeight = $('.home').height()
 let scrollWatch = () => {
-  let navArr = $t('nav')
-  navArr.forEach(v => {
-    let domTop = $(`.${v.className}`).offset().top
-    v.spaceTop = domTop
-  })
+  let navArr = []
+  let tempArr = $('.nav-list')
+  for (let i = 0, length = tempArr.length; i < length; i++) {
+    let obj = {
+      className: tempArr[i].getAttribute('name'),
+      spaceTop: $(tempArr[i]).offset().top
+    }
+    navArr.push(navArr)
+  }
   let scroll = document.documentElement.scrollTop || document.body.scrollTop
   let opacity
   if (scroll < (bannerHeight - topBarHeight)) {
@@ -49,18 +51,18 @@ let scrollWatch = () => {
       'box-shadow': `0 2px 4px 0 rgba(0,0,0,${opacity / 10})`,
     })
     if (opacity <= 0.5) {
-      dom.logo_img.attr('src', require('@/assets/imgs/blocktop_logo_white.png'))
+      dom.logo_img.attr('src', require('@/assets/imgs/my_logo_white.png'))
       dom.nav_span.removeClass('black')
       dom.nav_list.children('div.nav-con').removeClass('black-font')
     }
     if (opacity > 0.5) {
-      dom.logo_img.attr('src', require('@/assets/imgs/blocktop_logo_black.png'))
+      dom.logo_img.attr('src', require('@/assets/imgs/my_logo_black.png'))
       dom.nav_span.addClass('black')
       dom.nav_list.children('div.nav-con').addClass('black-font')
     }
   }
   else {
-    dom.logo_img.attr('src', require('@/assets/imgs/blocktop_logo_black.png'))
+    dom.logo_img.attr('src', require('@/assets/imgs/my_logo_black.png'))
     dom.nav_span.addClass('black')
     dom.nav_list.children('div.nav-con').addClass('black-font')
     dom.topBar.css({
@@ -94,21 +96,8 @@ let changeNav = (className) => {
     dom.nav_list.find(`[name=${className}]`).addClass('nav-active')
   }, 500)
 }
-let _setLang = () => {
-  setLang({
-    path: 'nav',
-    cb: (data) => {
-      let div = ''
-      data.forEach(v => {
-        div += `<div name="${v.className}" class="nav-con">${v.name}</div>`
-      })
-      dom.nav_list.html(div)
-      dom.nav_list.on('click', '.nav-con', function() {
-        changeNav($(this).attr('name'))
-      })
-    },
-  })
-}
-_setLang()
+dom.nav_list.on('click', '.nav-con', function () {
+  changeNav($(this).attr('name'))
+})
 init()
 module.exports = changeNav
